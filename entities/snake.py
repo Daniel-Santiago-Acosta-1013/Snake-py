@@ -1,4 +1,4 @@
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, RIGHT, UP, DOWN, LEFT
+from entities.constants import SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, RIGHT
 
 class Snake:
   def __init__(self):

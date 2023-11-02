@@ -1,5 +1,5 @@
 import random
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE
+from entities.constants import SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE
 
 def get_new_food(snake):
   while True:
