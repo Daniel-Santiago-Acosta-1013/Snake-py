@@ -34,27 +34,29 @@ def main():
                         snake.change_direction(LEFT)
                     elif event.key in [pygame.K_d, pygame.K_RIGHT] and snake.direction != LEFT:
                         snake.change_direction(RIGHT)
+        
+        if paused:
+            continue
 
-        if not paused:
-            snake.move()
+        snake.move()
 
-            if snake.body[0] == food:
-                snake.grow()
-                food = get_new_food(snake)
+        if snake.body[0] == food:
+            snake.grow()
+            food = get_new_food(snake)
 
-            if snake.collides_with_itself():
-                display_game_over(SCREEN)
-                pygame.time.wait(2000)  # Esperar 2 segundos
-                snake = Snake()
-                food = get_new_food(snake)
+        if snake.collides_with_itself():
+            display_game_over(SCREEN)
+            pygame.time.wait(2000)
+            snake = Snake()
+            food = get_new_food(snake)
 
-            SCREEN.fill(WHITE)
-            for segment in snake.body:
-                pygame.draw.rect(SCREEN, GREEN, (segment[0] * CELL_SIZE, segment[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
-            pygame.draw.rect(SCREEN, RED, (food[0] * CELL_SIZE, food[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+        SCREEN.fill(WHITE)
+        for segment in snake.body:
+            pygame.draw.rect(SCREEN, GREEN, (segment[0] * CELL_SIZE, segment[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+        pygame.draw.rect(SCREEN, RED, (food[0] * CELL_SIZE, food[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
-            pygame.display.flip()
-            CLOCK.tick(10)
+        pygame.display.flip()
+        CLOCK.tick(10)
 
 if __name__ == "__main__":
     main()
