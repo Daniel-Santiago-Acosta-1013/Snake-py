@@ -2,7 +2,7 @@ import pygame
 from entities.constants import SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, WHITE, GREEN, RED, UP, DOWN, LEFT, RIGHT
 from entities.snake import Snake
 from entities.food import get_new_food
-from entities.ui_manager import display_game_over, display_paused
+from entities.ui_manager import display_game_over, display_paused, display_score
 
 # Configuración inicial de pygame
 pygame.init()
@@ -14,6 +14,8 @@ def main():
     snake = Snake()
     food = get_new_food(snake)
     paused = False
+    score = 0
+    max_score = 0
 
     while True:
         for event in pygame.event.get():
@@ -43,17 +45,23 @@ def main():
         if snake.body[0] == food:
             snake.grow()
             food = get_new_food(snake)
+            score += 1
+            max_score = max(score, max_score)
 
         if snake.collides_with_itself():
             display_game_over(SCREEN)
             pygame.time.wait(2000)
             snake = Snake()
             food = get_new_food(snake)
+            score = 0  # Reiniciar el puntaje
 
         SCREEN.fill(WHITE)
         for segment in snake.body:
             pygame.draw.rect(SCREEN, GREEN, (segment[0] * CELL_SIZE, segment[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
         pygame.draw.rect(SCREEN, RED, (food[0] * CELL_SIZE, food[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+
+        # Dibuja el score y el max_score
+        display_score(SCREEN, score, max_score)
 
         pygame.display.flip()
         CLOCK.tick(10)

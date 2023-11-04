@@ -12,3 +12,7 @@ UP = (0, -1)
 DOWN = (0, 1)
 LEFT = (-1, 0)
 RIGHT = (1, 0)
+
+# Score
+SCORE_FONT_SIZE = 32
+SCORE_POS = (10, 10)

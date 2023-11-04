@@ -1,5 +1,5 @@
 import pygame
-from entities.constants import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE
+from entities.constants import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, SCORE_FONT_SIZE, SCORE_POS
 
 def get_font():
     return pygame.font.SysFont('arial', 36)
@@ -22,3 +22,11 @@ def display_game_over(screen):
 
 def display_paused(screen):
     display_modal(screen, get_paused_text())
+
+def get_score_font():
+    return pygame.font.SysFont('arial', SCORE_FONT_SIZE)
+
+def display_score(screen, score, max_score):
+    font = get_score_font()
+    score_text = font.render(f"Score: {score}   Record: {max_score}", True, (0, 0, 0))
+    screen.blit(score_text, SCORE_POS)
