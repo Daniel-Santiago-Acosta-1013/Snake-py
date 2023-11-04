@@ -1,5 +1,5 @@
 import pygame
-from entities.constants import SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, WHITE, GREEN, RED, UP, DOWN, LEFT, RIGHT
+from entities.constants import SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, BACKGROUND_COLOR, SNAKE_COLOR, FOOD_COLOR, UP, DOWN, LEFT, RIGHT
 from entities.snake import Snake
 from entities.food import get_new_food
 from entities.ui_manager import display_game_over, display_paused, display_score
@@ -55,10 +55,11 @@ def main():
             food = get_new_food(snake)
             score = 0  # Reiniciar el puntaje
 
-        SCREEN.fill(WHITE)
+        # Cambia WHITE por BACKGROUND_COLOR
+        SCREEN.fill(BACKGROUND_COLOR)
         for segment in snake.body:
-            pygame.draw.rect(SCREEN, GREEN, (segment[0] * CELL_SIZE, segment[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
-        pygame.draw.rect(SCREEN, RED, (food[0] * CELL_SIZE, food[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+            pygame.draw.rect(SCREEN, SNAKE_COLOR, (segment[0] * CELL_SIZE, segment[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+        pygame.draw.rect(SCREEN, FOOD_COLOR, (food[0] * CELL_SIZE, food[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
         # Dibuja el score y el max_score
         display_score(SCREEN, score, max_score)

@@ -2,10 +2,12 @@
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 CELL_SIZE = 20
 
-# Colores
-WHITE = (255, 255, 255)
-GREEN = (0, 128, 0)
-RED = (255, 0, 0)
+# Paleta de colores de GitHub (Modo oscuro)
+BACKGROUND_COLOR = (13, 17, 23)
+SNAKE_COLOR = (36, 41, 46)
+FOOD_COLOR = (95, 218, 146)
+TEXT_COLOR = (201, 209, 217)
+MODAL_BACKGROUND = (28, 33, 40) 
 
 # Direcciones
 UP = (0, -1)
