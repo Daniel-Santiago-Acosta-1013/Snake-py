@@ -18,3 +18,6 @@ RIGHT = (1, 0)
 # Score
 SCORE_FONT_SIZE = 32
 SCORE_POS = (10, 10)
+
+# Colores adicionales
+GOLDEN_FOOD_COLOR = (212, 175, 55)

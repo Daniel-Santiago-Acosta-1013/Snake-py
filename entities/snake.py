@@ -24,4 +24,8 @@ class Snake:
 
   def collides_with_itself(self):
     return self.body[0] in self.body[1:]
+  def shrink(self):
+        # Asegúrate de que la serpiente tiene más de 3 segmentos antes de acortar
+        if len(self.body) > 3:
+            self.body = self.body[:-3]
 

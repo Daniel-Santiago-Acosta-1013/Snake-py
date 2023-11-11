@@ -1,8 +1,8 @@
 import pygame
-from entities.constants import SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, BACKGROUND_COLOR, SNAKE_COLOR, FOOD_COLOR, UP, DOWN, LEFT, RIGHT
+from entities.constants import SCREEN_WIDTH, SCREEN_HEIGHT, CELL_SIZE, BACKGROUND_COLOR, SNAKE_COLOR, FOOD_COLOR, UP, DOWN, LEFT, RIGHT, GOLDEN_FOOD_COLOR
 from entities.snake import Snake
-from entities.walls import Walls, WALL_COLOR
-from entities.food import get_new_food
+from entities.walls import Walls
+from entities.food import get_new_food, get_golden_food
 from entities.ui_manager import display_game_over, display_paused, display_score
 
 # Configuración inicial de pygame
@@ -13,11 +13,14 @@ pygame.display.set_caption("Snake")
 
 def main():
     snake = Snake()
-    food = get_new_food(snake)
-    walls = Walls(snake, food)
+    walls = Walls(snake, None)
+    food = get_new_food(snake, walls)
+    golden_food = None
+    golden_food_available = False
     paused = False
     score = 0
     max_score = 0
+    normal_food_eaten = 0
 
     while True:
         for event in pygame.event.get():
@@ -46,34 +49,39 @@ def main():
 
         if snake.body[0] == food:
             snake.grow()
-            food = get_new_food(snake)
+            normal_food_eaten += 1
+            if normal_food_eaten % 5 == 0:  # Cada 5 comidas normales, aparece una comida dorada
+                golden_food = get_golden_food(snake, walls)
+                golden_food_available = True
+            food = get_new_food(snake, walls)
             score += 1
             max_score = max(score, max_score)
 
-        if snake.collides_with_itself():
+        if snake.collides_with_itself() or snake.body[0] in walls.positions:
             display_game_over(SCREEN)
             pygame.time.wait(2000)
             snake = Snake()
-            food = get_new_food(snake)
-            score = 0  # Reiniciar el puntaje
-
-        if snake.body[0] in walls.positions:  # Si la cabeza de la serpiente choca con una pared
-            display_game_over(SCREEN)
-            pygame.time.wait(2000)
-            snake = Snake()
-            food = get_new_food(snake)
-            walls = Walls(snake, food)  # Generamos nuevas paredes
+            walls = Walls(snake, None)
+            food = get_new_food(snake, walls)
+            normal_food_eaten = 0  # Reseteamos el contador de comidas normales
+            golden_food_available = False
             score = 0
 
-        # Dibuja serpiente y comida
+        if golden_food_available:
+            pygame.draw.rect(SCREEN, GOLDEN_FOOD_COLOR, (golden_food[0] * CELL_SIZE, golden_food[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+
+        if golden_food_available and snake.body[0] == golden_food:
+            snake.shrink()
+            golden_food_available = False  # La comida dorada desaparece después de ser comida
+            golden_food = None  # Reiniciar la comida dorada
+
         SCREEN.fill(BACKGROUND_COLOR)
         for segment in snake.body:
             pygame.draw.rect(SCREEN, SNAKE_COLOR, (segment[0] * CELL_SIZE, segment[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
         pygame.draw.rect(SCREEN, FOOD_COLOR, (food[0] * CELL_SIZE, food[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
-        walls.draw(SCREEN) # Dibujamos las paredes
+        walls.draw(SCREEN)
 
-        # Dibuja el score y el max_score
         display_score(SCREEN, score, max_score)
 
         pygame.display.flip()
